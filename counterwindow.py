@@ -14,47 +14,47 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(800, 600)
+        Dialog.resize(1000, 800)
         self.label = QtWidgets.QLabel(Dialog)
-        self.label.setGeometry(QtCore.QRect(50, 300, 200, 400))
+        self.label.setGeometry(QtCore.QRect(0, 400, 170, 165))
         self.label.setObjectName("label")
 
         self.label_2 = QtWidgets.QLabel(Dialog)
-        self.label_2.setGeometry(QtCore.QRect(200, 300, 200, 400))
+        self.label_2.setGeometry(QtCore.QRect(210, 400, 190, 160))
         self.label_2.setObjectName("label_2")
 
         self.label_3 = QtWidgets.QLabel(Dialog)
-        self.label_3.setGeometry(QtCore.QRect(350, 300, 200, 400))
+        self.label_3.setGeometry(QtCore.QRect(420, 400, 125, 150))
         self.label_3.setObjectName("label_3")
 
         self.label_4 = QtWidgets.QLabel(Dialog)
-        self.label_4.setGeometry(QtCore.QRect(500, 300, 200, 400))
+        self.label_4.setGeometry(QtCore.QRect(630, 400, 115, 170))
         self.label_4.setObjectName("label_4")
 
         self.label_6 = QtWidgets.QLabel(Dialog)
-        self.label_6.setGeometry(QtCore.QRect(650, 300, 200, 400))
+        self.label_6.setGeometry(QtCore.QRect(740, 400, 120, 165))
         self.label_6.setObjectName("label_6")
 
 
 
         self.pushButton = QtWidgets.QPushButton(Dialog)
-        self.pushButton.setGeometry(QtCore.QRect(200, 500, 100, 25))
+        self.pushButton.setGeometry(QtCore.QRect(105, 600, 100, 25))
         self.pushButton.setObjectName("pushButton")
 
         self.pushButton_2 = QtWidgets.QPushButton(Dialog)
-        self.pushButton_2.setGeometry(QtCore.QRect(450, 500, 100, 25))
+        self.pushButton_2.setGeometry(QtCore.QRect(315, 600, 100, 25))
         self.pushButton_2.setObjectName("pushButton_2")
 
         self.pushButton_3 = QtWidgets.QPushButton(Dialog)
-        self.pushButton_3.setGeometry(QtCore.QRect(700, 500, 100, 25))
+        self.pushButton_3.setGeometry(QtCore.QRect(525, 600, 100, 25))
         self.pushButton_3.setObjectName("pushButton_3")
 
         self.pushButton_4 = QtWidgets.QPushButton(Dialog)
-        self.pushButton_4.setGeometry(QtCore.QRect(950, 500, 100, 25))
+        self.pushButton_4.setGeometry(QtCore.QRect(735, 600, 100, 25))
         self.pushButton_4.setObjectName("pushButton_4")
 
         self.pushButton_6 = QtWidgets.QPushButton(Dialog)
-        self.pushButton_6.setGeometry(QtCore.QRect(1200, 500, 100, 25))
+        self.pushButton_6.setGeometry(QtCore.QRect(945, 600, 100, 25))
         self.pushButton_6.setObjectName("pushButton_6")
 
 
@@ -67,8 +67,8 @@ class Ui_Dialog(object):
 
 
         self.label_5 = QtWidgets.QLabel(Dialog)
-        self.label_5.setGeometry(QtCore.QRect(60, -200, 500, 500))
-        self.label_5.setObjectName("label")
+        self.label_5.setGeometry(QtCore.QRect(60, 50, 1000, 30))
+        self.label_5.setObjectName("label_5")
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)

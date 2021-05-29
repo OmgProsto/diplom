@@ -162,7 +162,7 @@ class SelectCountWin(QtWidgets.QWidget):
 
 	def count(self):
 		self.CountWin = CountWin()
-		self.CountWin.setFixedSize(800,600)
+		self.CountWin.setFixedSize(1000,800)
 		self.CountWin.show()
 
 	def falstadOpen(self):
@@ -202,14 +202,12 @@ class FalstadWin(QtWidgets.QWidget):
 class CountWin(QtWidgets.QWidget):
 
 	puzzle = [
-				{'x': 100, 'y': 200, 'check': False},
-				{'x': 221, 'y': 207, 'check': False},
-				{'x': 300, 'y': 203, 'check': False},
-				{'x': 730, 'y': 205, 'check': False},
-				{'x': 800, 'y': 205, 'check': False},
+				{'x': 0, 'y': 50, 'check': False},
+				{'x': 170, 'y': 50, 'check': False},
+				{'x': 360, 'y': 50, 'check': False},
+				{'x': 550, 'y': 50, 'check': False},
+				{'x': 680, 'y': 50, 'check': False},
 			]
-
-	flagBut = {}
 
 	trueOrder = {
 		1: ['label', 'label_2', 'label_3', 'label_4', 'label_6'],
@@ -217,6 +215,8 @@ class CountWin(QtWidgets.QWidget):
 
 	def __init__(self):
 		super(CountWin, self).__init__()
+
+		self.flagBut = {}
 
 		self.cwui = cw()
 		self.cwui.setupUi(self)
@@ -241,7 +241,7 @@ class CountWin(QtWidgets.QWidget):
 			self.cwui.label_3.setText("<img src='img/count/четвертый.png'>")
 			self.cwui.label_4.setText("<img src='img/count/второй.png'>")
 			self.cwui.label_6.setText("<img src='img/count/третий.png'>")
-			self.cwui.label_5.setText("Составить суммирующий счётчик на d-триггерах с модулем счета 9<br><hr>")
+			self.cwui.label_5.setText("Составить суммирующий счётчик на d-триггерах с модулем счета 9")
 
 		#elif self.mission == 2:
 		#	self.cwui.label.setText("<img src='img/count/первый.png'>")
@@ -264,19 +264,27 @@ class CountWin(QtWidgets.QWidget):
 	def jump(self, label):
 
 		if label.objectName() in list(self.flagBut):
+			print(label.pos().x())
+			print(label.pos().y())
 			for i in self.puzzle:
 				if (i['x'] == label.pos().x() and i['y'] == label.pos().y()):
 					i['check'] = False
 					break
-			label.setGeometry(QtCore.QRect(self.flagBut[label.objectName()][0], self.flagBut[label.objectName()][1], 700, 500))
+			label.setGeometry(QtCore.QRect(self.flagBut[label.objectName()][0], self.flagBut[label.objectName()][1], label.size().width(), label.size().height()))
 			del(self.flagBut[label.objectName()])
+			print(label.pos().x())
+			print(label.pos().y())
 		else:
+			print(label.pos().x())
+			print(label.pos().y())
 			self.flagBut[label.objectName()] = [label.pos().x(), label.pos().y()]
 			for i in self.puzzle:
 				if (i['check'] == False):
-					label.setGeometry(QtCore.QRect(i['x'], i['y'], 700, 500))
+					label.setGeometry(QtCore.QRect(i['x'], i['y'], label.size().width(), label.size().height()))
 					i['check'] = True
 					break
+			print(label.pos().x())
+			print(label.pos().y())
 
 		for i in self.puzzle:
 			if i['check'] == False:
