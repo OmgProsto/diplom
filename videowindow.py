@@ -46,7 +46,9 @@ class Ui_Dialog(object):
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Видеоматериалы"))
-        self.pushButton_1.setText(_translate("Dialog", "Счетчики"))
+        self.pushButton_1.setIcon(QtGui.QIcon('img/icon/icon.jpg'))
+        self.pushButton_1.setText(_translate("Dialog", "Триггеры ч.1"))
+
         self.pushButton_2.setText(_translate("Dialog", "Триггеры ч.1"))
         self.pushButton_3.setText(_translate("Dialog", "Триггеры ч.2"))
         self.pushButton_4.setText(_translate("Dialog", "Сумматоры"))

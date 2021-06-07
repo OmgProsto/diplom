@@ -7,6 +7,7 @@ from PyQt5.QtWebEngineWidgets import QWebEngineSettings, QWebEngineView, QWebEng
 import sys, os, time, threading, random
 import matplotlib.pyplot as plt
 
+from config import getConfig
 from mainwindow import Ui_MainWindow as mw
 from secondwindow import Ui_Dialog as sw
 from autowindow import Ui_Dialog as aw
@@ -17,6 +18,9 @@ from videowindow import Ui_Dialog as vw
 from counterwindow import Ui_Dialog as cw
 from selectcountwindow import Ui_Dialog as scw
 from diagrammwindow import Ui_Dialog as dw
+from adminpwdwindow import Ui_Dialog as apw
+from adminpanelwindow import Ui_Dialog as apnw
+
 from readFile import text_full, welcomeFile
 from autoUser import users, que_user, upd_res, check, sbrosFile
 from readQue import lst_que
@@ -39,6 +43,7 @@ class MainWindow(QtWidgets.QMainWindow):
 		self.mwui.pushButton_5.clicked.connect(self.stat)
 		self.mwui.pushButton_6.clicked.connect(self.video)
 		self.mwui.pushButton_7.clicked.connect(self.count)
+		self.mwui.pushButton_8.clicked.connect(self.admin)
 
 		self.achive = que_user(surname, group);
 		resultTest = round(self.achive[1] / 7 * 100)
@@ -49,8 +54,7 @@ class MainWindow(QtWidgets.QMainWindow):
 		colorResultSec = 'red' if resultTestSec < 40 else 'green'
 
 		colorResultPractice = "<span style='color: green'> выполнено </span>"
-		print(colorResult)
-		# self.mwui.label.setText(welcomeFile())
+
 		self.mwui.label_2.setText(f'Студент: <strong>{surname}</strong>')
 		self.mwui.label_3.setText(f'Группа: <strong>{group}</strong>')
 		self.mwui.label_4.setText(f"""Процент выполнения 1 теста: <span style="color: {colorResult}">{resultTest}%</span> / Оставшиеся попытки: {self.achive[0]}""")
@@ -67,6 +71,10 @@ class MainWindow(QtWidgets.QMainWindow):
 		msgBox = QtWidgets.QMessageBox()
 		msgBox.setText('Для выполнения заданий, необходимо для начала ознакомиться с теорией, доступной в меню "Теория"\n Для прохождения теста перейдите в раздел "Тест"\n Для выполнения практического задания перейдите в "Практическое задание"\n Для просмотра видеоматериала перейдите в "Видеоматериалы" ')
 		msgBox.exec()
+
+	def admin(self):
+		self.AdminAuthWin = AdminAuthWin()
+		self.AdminAuthWin.show()
 
 	def stat(self):
 		self.StatWin = StatWin()
@@ -147,6 +155,36 @@ class SelectTestWin(QtWidgets.QWidget):
 				self.TestWin.show()
 
 
+class AdminAuthWin(QtWidgets.QWidget):
+	def __init__(self):
+		super(AdminAuthWin, self).__init__()
+
+		self.apw = apw()
+		self.apw.setupUi(self)
+
+		self.apw.pushButton.clicked.connect(self.auth)
+
+	def auth(self):
+		password = self.apw.lineEdit.text()
+
+		if (password == getConfig('pwdAdmin')):
+			self.AdminPanelWin = AdminPanelWin()
+			self.AdminPanelWin.setFixedSize(800,600)
+			self.AdminPanelWin.show()
+		else:
+			msgBox = QtWidgets.QMessageBox()
+			msgBox.setText("Пароль не верный!")
+			msgBox.exec()
+
+
+class AdminPanelWin(QtWidgets.QWidget):
+	def __init__(self):
+		super(AdminPanelWin, self).__init__()
+
+		self.apnw = apnw()
+		self.apnw.setupUi(self)
+
+
 
 class SelectCountWin(QtWidgets.QWidget):
 	def __init__(self):
@@ -176,12 +214,21 @@ class SelectCountWin(QtWidgets.QWidget):
 class FalstadWin(QtWidgets.QWidget):
 	def __init__(self):
 		super().__init__()
+
+		self.questions = [
+			['1 впорос', 'ansCount1'],
+			['2 вопрос', 'ansCount2']
+			]
+
+		self.true = random.randint(0, 1)
+		print(self.true)
 		self.initUI()
+		
 
 	def initUI(self):
 		web = QWebEngineView()
 
-		web.load(QtCore.QUrl("https://falstad.com/circuit/circuitjs.html"))
+		web.load(QtCore.QUrl(getConfig('falstadUrl')))
 		def processHTML(html):
 		    print(1)
 		html = web.page().toHtml(processHTML)
@@ -189,9 +236,31 @@ class FalstadWin(QtWidgets.QWidget):
 		self.btn = QtWidgets.QPushButton('Выход', self)
 		self.btn.resize(self.btn.sizeHint())
 		self.btn.clicked.connect(self.exit)
+
+		self.label = QtWidgets.QLabel(self.questions[self.true][0], self) # Пишешь задание вместо 123
+		self.edit = QtWidgets.QLineEdit(self)
+		self.btnAns = QtWidgets.QPushButton('Ответить', self)
+
+		self.btnAns.clicked.connect(self.answer)
+
 		lay = QtWidgets.QVBoxLayout(self)
 		lay.addWidget(self.btn)
 		lay.addWidget(web)
+		lay.addWidget(self.label)
+		lay.addWidget(self.edit)
+		lay.addWidget(self.btnAns)
+
+
+	def answer(self):
+		if (self.edit.text() == getConfig(self.questions[self.true][1])):
+			self.btnAns.setEnabled(False)
+			msgBox = QtWidgets.QMessageBox()
+			msgBox.setText("Верно")
+			msgBox.exec()
+		else:
+			msgBox = QtWidgets.QMessageBox()
+			msgBox.setText("Не верно")
+			msgBox.exec()
 		
 	def exit(self):
 		self.hide()
@@ -333,38 +402,38 @@ class VideoWin(QtWidgets.QWidget):
 		self.player.setMedia(QMediaContent(QtCore.QUrl.fromLocalFile("video/счетчики.mp4")))
 		self.player.setVolume(25)
 
-		#self.vwui.pushButton_2.clicked.connect(self.playVideo)
+		# self.vwui.pushButton_2.clicked.connect(self.playVideo)
 
-		#self.videoPlay = QVideoWidget()
-		#self.videoPlay.resize(300, 300)
-		#self.videoPlay.move(0, 0)
+		# self.videoPlay = QVideoWidget()
+		# self.videoPlay.resize(300, 300)
+		# self.videoPlay.move(0, 0)
 
-		#self.player = QMediaPlayer()
-		#self.player.setVideoOutput(self.videoPlay)
-		#self.player.setMedia(QMediaContent(QtCore.QUrl.fromLocalFile("video/тригеры.mp4")))
-		#self.player.setVolume(25)
+		# self.player = QMediaPlayer()
+		# self.player.setVideoOutput(self.videoPlay)
+		# self.player.setMedia(QMediaContent(QtCore.QUrl.fromLocalFile("video/тригеры.mp4")))
+		# self.player.setVolume(25)
 
-		#self.vwui.pushButton_3.clicked.connect(self.playVideo)
+		# self.vwui.pushButton_3.clicked.connect(self.playVideo)
 
-		#self.videoPlay = QVideoWidget()
-		#self.videoPlay.resize(300, 300)
-		#self.videoPlay.move(0, 0)
+		# self.videoPlay = QVideoWidget()
+		# self.videoPlay.resize(300, 300)
+		# self.videoPlay.move(0, 0)
 
-		#self.player = QMediaPlayer()
-		#self.player.setVideoOutput(self.videoPlay)
-		#self.player.setMedia(QMediaContent(QtCore.QUrl.fromLocalFile("video/тригеры2.mp4")))
-		#self.player.setVolume(25)
+		# self.player = QMediaPlayer()
+		# self.player.setVideoOutput(self.videoPlay)
+		# self.player.setMedia(QMediaContent(QtCore.QUrl.fromLocalFile("video/тригеры2.mp4")))
+		# self.player.setVolume(25)
 
-		#self.vwui.pushButton_4.clicked.connect(self.playVideo)
+		# self.vwui.pushButton_4.clicked.connect(self.playVideo)
 
-		#self.videoPlay = QVideoWidget()
-		#self.videoPlay.resize(300, 300)
-		#self.videoPlay.move(0, 0)
+		# self.videoPlay = QVideoWidget()
+		# self.videoPlay.resize(300, 300)
+		# self.videoPlay.move(0, 0)
 
-		#self.player = QMediaPlayer()
-		#self.player.setVideoOutput(self.videoPlay)
-		#self.player.setMedia(QMediaContent(QtCore.QUrl.fromLocalFile("video/счетчики.mp4")))
-		#self.player.setVolume(25)
+		# self.player = QMediaPlayer()
+		# self.player.setVideoOutput(self.videoPlay)
+		# self.player.setMedia(QMediaContent(QtCore.QUrl.fromLocalFile("video/счетчики.mp4")))
+		# self.player.setVolume(25)
 
 	def playVideo(self):
 		self.player.setPosition(0)
@@ -582,7 +651,7 @@ class StatWin(QtWidgets.QWidget):
 		sbrosFile()
 
 
-if __name__ == '__main__':	
+if __name__ == '__main__':
 	app = QtWidgets.QApplication([])
 	app.setStyleSheet("""
 		QWidget { font-family: Comic Sans MS, cursive, sans-serif; background-color: #C8C2BC; color: black; font-size: 15px }
