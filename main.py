@@ -23,7 +23,7 @@ from adminpanelwindow import Ui_Dialog as apnw
 
 from readFile import text_full, welcomeFile
 from autoUser import users, que_user, upd_res, check, sbrosFile
-from readQue import lst_que
+from readQue import lst_que, createQue, removeQue, countQue
 
 surname = ''
 group = ''
@@ -32,7 +32,7 @@ class MainWindow(QtWidgets.QMainWindow):
 	def __init__(self):
 		super(MainWindow, self).__init__()
 	
-		self.SecondWin, self.AutoWin, self.StatWin, self.VideoWin, self.CountWin = '', '', '', '', ''
+		self.SecondWin, self.AutoWin, self.VideoWin, self.CountWin = '', '', '', ''
 
 		self.mwui = mw()
 		self.mwui.setupUi(self)
@@ -40,17 +40,16 @@ class MainWindow(QtWidgets.QMainWindow):
 		self.mwui.pushButton_2.clicked.connect(self.test)
 		self.mwui.pushButton_3.clicked.connect(self.exit)
 		self.mwui.pushButton_4.clicked.connect(self.about)
-		self.mwui.pushButton_5.clicked.connect(self.stat)
 		self.mwui.pushButton_6.clicked.connect(self.video)
 		self.mwui.pushButton_7.clicked.connect(self.count)
 		self.mwui.pushButton_8.clicked.connect(self.admin)
 
 		self.achive = que_user(surname, group);
-		resultTest = round(self.achive[1] / 7 * 100)
+		resultTest = round(self.achive[1] / countQue(1) * 100)
 		colorResult = 'red' if resultTest < 40 else 'green'
 
 		self.achiveSec = que_user(surname, group, 2);
-		resultTestSec = round(self.achiveSec[1] / 7 * 100)
+		resultTestSec = round(self.achiveSec[1] / countQue(2) * 100)
 		colorResultSec = 'red' if resultTestSec < 40 else 'green'
 
 		colorResultPractice = "<span style='color: green'> выполнено </span>"
@@ -75,10 +74,6 @@ class MainWindow(QtWidgets.QMainWindow):
 	def admin(self):
 		self.AdminAuthWin = AdminAuthWin()
 		self.AdminAuthWin.show()
-
-	def stat(self):
-		self.StatWin = StatWin()
-		self.StatWin.show()
 
 	def test(self):
 		self.SelectTestWin = SelectTestWin()
@@ -122,11 +117,11 @@ class SelectTestWin(QtWidgets.QWidget):
 
 		if new_user[0] == 0:
 			msgBox = QtWidgets.QMessageBox()
-			msgBox.setText(f"Вы больше не можете пройти этот тест. Ваш последний результат {new_user[1]}/7")
+			msgBox.setText(f"Вы больше не можете пройти этот тест. Ваш последний результат {new_user[1]}/{countQue(1)}")
 			msgBox.exec()
 		else:
 			msgBox = QtWidgets.QMessageBox()
-			res = msgBox.question(self, 'PyQt5 message', f'У вас осталось попыток {new_user[0]}, хотите пройти тест еще раз? Ваш последний результат {new_user[1]}/7', QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No, QtWidgets.QMessageBox.No)
+			res = msgBox.question(self, 'PyQt5 message', f'У вас осталось попыток {new_user[0]}, хотите пройти тест еще раз? Ваш последний результат {new_user[1]}/{countQue(1)}', QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No, QtWidgets.QMessageBox.No)
 			
 			if res == QtWidgets.QMessageBox.Yes:
 				users(surname, group)
@@ -142,11 +137,11 @@ class SelectTestWin(QtWidgets.QWidget):
 
 		if new_user[0] == 0:
 			msgBox = QtWidgets.QMessageBox()
-			msgBox.setText(f"Вы больше не можете пройти этот тест. Ваш последний результат {new_user[1]}/7")
+			msgBox.setText(f"Вы больше не можете пройти этот тест. Ваш последний результат {new_user[1]}/{countQue(2)}")
 			msgBox.exec()
 		else:
 			msgBox = QtWidgets.QMessageBox()
-			res = msgBox.question(self, 'PyQt5 message', f'У вас осталось попыток {new_user[0]}, хотите пройти тест еще раз? Ваш последний результат {new_user[1]}/7', QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No, QtWidgets.QMessageBox.No)
+			res = msgBox.question(self, 'PyQt5 message', f'У вас осталось попыток {new_user[0]}, хотите пройти тест еще раз? Ваш последний результат {new_user[1]}/{countQue(2)}', QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No, QtWidgets.QMessageBox.No)
 			
 			if res == QtWidgets.QMessageBox.Yes:
 				users(surname, group, 2)
@@ -171,6 +166,7 @@ class AdminAuthWin(QtWidgets.QWidget):
 			self.AdminPanelWin = AdminPanelWin()
 			self.AdminPanelWin.setFixedSize(800,600)
 			self.AdminPanelWin.show()
+			self.hide()
 		else:
 			msgBox = QtWidgets.QMessageBox()
 			msgBox.setText("Пароль не верный!")
@@ -184,6 +180,44 @@ class AdminPanelWin(QtWidgets.QWidget):
 		self.apnw = apnw()
 		self.apnw.setupUi(self)
 
+		self.apnw.pushButton.clicked.connect(self.create)
+		self.apnw.pushButton_2.clicked.connect(self.remove)
+		self.apnw.pushButton_3.clicked.connect(self.exit)
+		self.apnw.pushButton_4.clicked.connect(self.stat)
+
+	def create(self):
+		createQue(
+			1, 
+			self.apnw.lineEdit.text(), 
+			self.apnw.lineEdit_2.text(),
+			self.apnw.lineEdit_3.text(),
+			self.apnw.lineEdit_4.text(),
+			self.apnw.lineEdit_5.text()
+			)
+
+		self.apnw.lineEdit.setText('') 
+		self.apnw.lineEdit_2.setText('') 
+		self.apnw.lineEdit_3.setText('') 
+		self.apnw.lineEdit_4.setText('') 
+		self.apnw.lineEdit_5.setText('')
+
+		msgBox = QtWidgets.QMessageBox()
+		msgBox.setText("Вопрос добавлен")
+		msgBox.exec()
+
+	def remove(self):
+		removeQue(1)
+
+		msgBox = QtWidgets.QMessageBox()
+		msgBox.setText("Последний вопрос удален")
+		msgBox.exec()
+
+	def exit(self):
+		self.hide()
+
+	def stat(self):
+		self.StatWin = StatWin()
+		self.StatWin.show()
 
 
 class SelectCountWin(QtWidgets.QWidget):

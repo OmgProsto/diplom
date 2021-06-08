@@ -16,20 +16,52 @@ class Ui_Dialog(object):
         Dialog.setObjectName("Dialog")
         Dialog.resize(1000, 800)
         self.label = QtWidgets.QLabel(Dialog)
-        self.label.setGeometry(QtCore.QRect(0, 400, 170, 165))
+        self.label.setGeometry(QtCore.QRect(0, 0, 50, 50))
         self.label.setObjectName("label")
 
         self.label_2 = QtWidgets.QLabel(Dialog)
-        self.label_2.setGeometry(QtCore.QRect(210, 400, 190, 160))
+        self.label_2.setGeometry(QtCore.QRect(0, 200, 50, 50))
         self.label_2.setObjectName("label_2")
 
         self.label_3 = QtWidgets.QLabel(Dialog)
-        self.label_3.setGeometry(QtCore.QRect(420, 400, 125, 150))
+        self.label_3.setGeometry(QtCore.QRect(0, 300, 50, 50))
         self.label_3.setObjectName("label_3")
 
         self.pushButton = QtWidgets.QPushButton(Dialog)
-        self.pushButton.setGeometry(QtCore.QRect(105, 600, 100, 25))
+        self.pushButton.setGeometry(QtCore.QRect(500, 0, 150, 50))
         self.pushButton.setObjectName("pushButton")
+
+        self.pushButton_2 = QtWidgets.QPushButton(Dialog)
+        self.pushButton_2.setGeometry(QtCore.QRect(500, 200, 150, 25))
+        self.pushButton_2.setObjectName("pushButton_2")
+
+        self.pushButton_3 = QtWidgets.QPushButton(Dialog)
+        self.pushButton_3.setGeometry(QtCore.QRect(500, 300, 150, 25))
+        self.pushButton_3.setObjectName("pushButton_3")
+
+        self.pushButton_4 = QtWidgets.QPushButton(Dialog)
+        self.pushButton_4.setGeometry(QtCore.QRect(500, 400, 150, 25))
+        self.pushButton_4.setObjectName("pushButton_4")
+
+        self.lineEdit = QtWidgets.QLineEdit(Dialog)
+        self.lineEdit.setGeometry(QtCore.QRect(200, 0, 113, 25))
+        self.lineEdit.setObjectName("lineEdit")
+
+        self.lineEdit_2 = QtWidgets.QLineEdit(Dialog)
+        self.lineEdit_2.setGeometry(QtCore.QRect(200, 200, 113, 25))
+        self.lineEdit_2.setObjectName("lineEdit_2")
+
+        self.lineEdit_3 = QtWidgets.QLineEdit(Dialog)
+        self.lineEdit_3.setGeometry(QtCore.QRect(200, 300, 113, 25))
+        self.lineEdit_3.setObjectName("lineEdit_3")
+
+        self.lineEdit_4 = QtWidgets.QLineEdit(Dialog)
+        self.lineEdit_4.setGeometry(QtCore.QRect(200, 400, 113, 25))
+        self.lineEdit_4.setObjectName("lineEdit_4")
+
+        self.lineEdit_5 = QtWidgets.QLineEdit(Dialog)
+        self.lineEdit_5.setGeometry(QtCore.QRect(200, 500, 113, 25))
+        self.lineEdit_5.setObjectName("lineEdit_5")
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
@@ -37,5 +69,11 @@ class Ui_Dialog(object):
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
-        self.pushButton.setText(_translate("Dialog", "1"))
+        self.pushButton.setText(_translate("Dialog", "Добавить вопрос"))
+        self.pushButton_2.setText(_translate("Dialog", "Удалить последний"))
+        self.pushButton_3.setText(_translate("Dialog", "Выйти"))
+        self.pushButton_4.setText(_translate("Dialog", "Посмотреть статистику по всем"))
+        self.label.setText(_translate("Dialog", "Пароль введите"))
+        self.label_2.setText(_translate("Dialog", "Пароль введите"))
+        self.label_3.setText(_translate("Dialog", "Пароль введите"))
 

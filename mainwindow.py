@@ -45,10 +45,6 @@ class Ui_MainWindow(object):
         self.pushButton_4.setGeometry(QtCore.QRect(0, 0, 130, 25))
         self.pushButton_4.setObjectName("main_pushButton_4")
 
-        self.pushButton_5 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_5.setGeometry(QtCore.QRect(130, 0, 130, 25))
-        self.pushButton_5.setObjectName("main_pushButton_5")
-
         self.pushButton_8 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_8.setGeometry(QtCore.QRect(300, 30, 240, 50))
         self.pushButton_8.setObjectName("pushButton_8")
@@ -98,7 +94,6 @@ class Ui_MainWindow(object):
         self.pushButton_2.setText(_translate("MainWindow", "Тест"))
         self.pushButton_3.setText(_translate("MainWindow", "Выход"))
         self.pushButton_4.setText(_translate("MainWindow", "Справка"))
-        self.pushButton_5.setText(_translate("MainWindow", "Статистика"))
         self.pushButton_6.setText(_translate("MainWindow", "Видеоматериалы"))
         self.pushButton_7.setText(_translate("MainWindow", "Практическое задание"))
         self.action.setText(_translate("MainWindow", "Помощь"))
